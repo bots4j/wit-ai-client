@@ -1,0 +1,50 @@
+{
+  "confidence" : 1,
+  "type" : "merge",
+  "entities" : {
+    "intent" : [ {
+      "type" : "value",
+      "value" : "book-trip"
+    } ],
+    "location" : [ {
+      "type" : "value",
+      "value" : "stockholm",
+      "suggested" : true
+    } ],
+    "datetime" : [ {
+      "type" : "value",
+      "value" : "2016-04-18T00:00:00.000-07:00",
+      "grain" : "day",
+      "values" : [ {
+        "type" : "value",
+        "value" : "2016-04-18T00:00:00.000-07:00",
+        "grain" : "day"
+      }, {
+        "type" : "value",
+        "value" : "2016-04-25T00:00:00.000-07:00",
+        "grain" : "day"
+      }, {
+        "type" : "value",
+        "value" : "2016-05-02T00:00:00.000-07:00",
+        "grain" : "day"
+      } ]
+    }, {
+      "type" : "value",
+      "value" : "2016-04-20T00:00:00.000-07:00",
+      "grain" : "day",
+      "values" : [ {
+        "type" : "value",
+        "value" : "2016-04-20T00:00:00.000-07:00",
+        "grain" : "day"
+      }, {
+        "type" : "value",
+        "value" : "2016-04-27T00:00:00.000-07:00",
+        "grain" : "day"
+      }, {
+        "type" : "value",
+        "value" : "2016-05-04T00:00:00.000-07:00",
+        "grain" : "day"
+      } ]
+    } ]
+  }
+}

@@ -14,9 +14,13 @@ package org.bots4j.wit.beans;/*
  * limitations under the License.
  */
 
+import com.google.api.client.util.ArrayMap;
 import com.google.api.client.util.Key;
 
 import org.bots4j.utils.json.FlexibleMap;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by ajchesney on 13/04/2016.
@@ -30,7 +34,7 @@ public class ConverseResponse {
     @Key
     private String msg;
     @Key
-    private FlexibleMap entities;
+    private EntityMap entities = new EntityMap();
     @Key
     private Double confidence;
 
@@ -108,7 +112,7 @@ public class ConverseResponse {
      * @return
      * The entities
      */
-    public FlexibleMap getEntities() {
+    public EntityMap getEntities() {
         return entities;
     }
 
@@ -117,11 +121,11 @@ public class ConverseResponse {
      * @param entities
      * The entities
      */
-    public void setEntities(FlexibleMap entities) {
+    public void setEntities(EntityMap entities) {
         this.entities = entities;
     }
 
-    public ConverseResponse withEntities(FlexibleMap entities) {
+    public ConverseResponse withEntities(EntityMap entities) {
         this.entities = entities;
         return this;
     }

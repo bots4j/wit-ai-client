@@ -26,7 +26,9 @@ import com.google.api.client.util.Key;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class WitContext {
+import org.bots4j.utils.json.FlexibleMap;
+
+public class WitContext extends FlexibleMap {
 
     @Key
     private List<String> state = new ArrayList<String>();
@@ -126,6 +128,21 @@ public class WitContext {
 
     public WitContext withEntities(List<WitEntity> entities) {
         this.entities = entities;
+        return this;
+    }
+
+    /**
+     * Merge the given resolved entities into this context
+     * so that any existing with the same ID are removed first
+     * @param resolved_entities
+     * @return
+     */
+    public WitContext merge(List<WitEntity> resolved_entities){
+        resolved_entities.stream().forEach(re -> {
+                entities.removeIf(e -> e.getId().equals(re.getId()));
+                entities.add(re);
+            }
+        );
         return this;
     }
 

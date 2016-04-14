@@ -1,0 +1,16 @@
+{
+  "request" : {
+    "url" : "/message?v=20160413&q=i%20want%20to%20be%20in%20paris%20on%20the%203rd%20of%20may?",
+    "method" : "GET"
+  },
+  "response" : {
+    "status" : 200,
+    "bodyFileName" : "body-message-8SBbH.json",
+    "headers" : {
+      "Server" : "nginx/1.8.0",
+      "Date" : "Thu, 14 Apr 2016 15:11:14 GMT",
+      "Content-Type" : "application/json",
+      "Connection" : "keep-alive"
+    }
+  }
+}

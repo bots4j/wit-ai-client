@@ -19,13 +19,10 @@
 package org.bots4j.wit;
 
 import com.google.api.client.http.GenericUrl;
-import com.google.api.client.http.HttpContent;
 import com.google.api.client.http.HttpRequest;
 import com.google.api.client.http.HttpRequestFactory;
-import com.google.api.client.http.HttpResponse;
 import com.google.api.client.http.HttpTransport;
 import com.google.api.client.http.javanet.NetHttpTransport;
-import com.google.api.client.http.json.JsonHttpContent;
 import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.JsonObjectParser;
 import com.google.api.client.json.gson.GsonFactory;
@@ -34,18 +31,17 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.bots4j.utils.json.GsonUtils;
 import org.bots4j.wit.beans.ConverseResponse;
+import org.bots4j.wit.beans.GetIntentViaTextResponse;
 import org.bots4j.wit.beans.WitContext;
 
 
 import java.io.IOException;
 import java.net.URI;
-import java.util.concurrent.Executor;
-import java.util.concurrent.Future;
+
+import javax.annotation.Nullable;
 
 /**
- * Java implementation to kind of match c# examples at
- *
- * http://docs.botframework.com/connector/getstarted
+ * Client for interacting with Wit.ai Bot Engine
  *
  *
  * Created by ajchesney on 11/04/2016.
@@ -65,21 +61,46 @@ public class WitClient {
 
     private HttpRequestFactory requestFactory;
 
+    /**
+     * Create client and look for Wit App Token in system prop: org.bots4j.witai.token
+     */
     public WitClient(){
         this(validateSystemPropertyExists(APP_TOKEN_KEY));
     }
 
+    /**
+     * Create client with the given wit ai app token
+     * @param appToken
+     */
     public WitClient(String appToken){
         this(BASE_URL, appToken);
     }
 
+    /**
+     * Create client using non-default baseUrl and given app token
+     * This is useful for testing etc
+     * @param baseUrl
+     * @param appToken
+     */
     public WitClient(String baseUrl, String appToken){
         this.baseUrl = baseUrl;
         this.appToken = appToken;
         requestFactory = createHttpRequestFactory();
     }
 
-    public ConverseResponse converse(String sessionId, String messageFromUser, WitContext context){
+    /**
+     * Returns what your bot should do next.
+     * The next step can be either answering to the user,
+     * performing an action, or waiting for further requests.
+     *
+     * @param sessionId
+     * @param messageFromUser
+     * @param context
+     * @return
+     */
+    public ConverseResponse converse(String sessionId,
+                                     @Nullable String messageFromUser,
+                                     @Nullable WitContext context){
         GenericUrl url = url("/converse").set("session_id", sessionId);
         if (messageFromUser!=null){
             url.set("q",messageFromUser);
@@ -88,6 +109,38 @@ public class WitClient {
             url.set("context", GsonUtils.toJson(context));
         }
         return postRequest(url,ConverseResponse.class);
+    }
+
+    /**
+     * Returns the extracted meaning from a sentence, based on the app data.
+     *
+     * @param messageFromUser - query text provided by user
+     * @param context - @WitContext containing context properties
+     * @param messageId - Your id for this getIntentViaText if you have one
+     * @param threadId - Your id for this conversation if you have one
+     * @param numberOfBestOutcomes
+     * @return @GetIntentViaTextResponse containing probable intents
+     */
+    public GetIntentViaTextResponse getIntentViaText(String messageFromUser,
+                                                     @Nullable WitContext context,
+                                                     @Nullable String messageId,
+                                                     @Nullable String threadId,
+                                                     @Nullable Integer numberOfBestOutcomes){
+
+        GenericUrl url = url("/message").set("q", messageFromUser);
+        if (context!=null){
+            url.set("context", GsonUtils.toJson(context));
+        }
+        if (messageId!=null){
+            url.set("msg_id", messageId);
+        }
+        if (threadId!=null){
+            url.set("thread_id",threadId);
+        }
+        if(numberOfBestOutcomes!=null){
+            url.set("n",numberOfBestOutcomes);
+        }
+        return getRequest(url,GetIntentViaTextResponse.class);
     }
 
     protected GenericUrl url(String path){
@@ -101,15 +154,31 @@ public class WitClient {
                 logger.debug("Request POSTed into wit.ai api " + url.toString());
             }
             HttpRequest request = requestFactory.buildPostRequest(url,null);
-            E response = (E) request.execute().parseAs(responseType);
-            if ( logger.isDebugEnabled() ){
-                logger.debug("Response back from wit.ai api:");
-                logger.debug(JSON_FACTORY.toPrettyString(response));
-            }
-            return response;
+            return parseResponse(request,responseType);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    protected <E> E getRequest(GenericUrl url, Class<E> responseType){
+        try {
+            if ( logger.isDebugEnabled() ){
+                logger.debug("Request POSTed into wit.ai api " + url.toString());
+            }
+            HttpRequest request = requestFactory.buildGetRequest(url);
+            return parseResponse(request, responseType);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private <E> E parseResponse(HttpRequest request, Class<E> responseType) throws IOException {
+        E response = (E) request.execute().parseAs(responseType);
+        if ( logger.isDebugEnabled() ){
+            logger.debug("Response back from wit.ai api:");
+            logger.debug(JSON_FACTORY.toPrettyString(response));
+        }
+        return response;
     }
 
     private URI uri(String path) {
@@ -130,6 +199,7 @@ public class WitClient {
         return HTTP_TRANSPORT.createRequestFactory(request -> {
             request.setParser(new JsonObjectParser(JSON_FACTORY));
             request.getHeaders().setAuthorization("Bearer " + appToken);
+            request.getHeaders().setAccept("application/vnd.wit." + VERSION +"+json");
         });
     }
 

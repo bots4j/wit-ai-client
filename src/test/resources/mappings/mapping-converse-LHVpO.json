@@ -1,0 +1,16 @@
+{
+  "request" : {
+    "url" : "/converse?v=20160413&session_id=test-converse-id1&q=i%20need%20to%20go%20to%20stockholm%20on%20monday%20and%20come%20back%20on%20wednesday&context=%7B%7D",
+    "method" : "POST"
+  },
+  "response" : {
+    "status" : 200,
+    "bodyFileName" : "body-converse-LHVpO.json",
+    "headers" : {
+      "Server" : "nginx/1.8.0",
+      "Date" : "Thu, 14 Apr 2016 15:11:08 GMT",
+      "Content-Type" : "application/json",
+      "Connection" : "keep-alive"
+    }
+  }
+}

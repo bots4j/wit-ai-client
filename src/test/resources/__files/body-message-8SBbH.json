@@ -1,0 +1,37 @@
+{
+  "msg_id" : "f4c802e8-5716-40b1-9dc3-26ec270359af",
+  "_text" : "i want to be in paris on the 3rd of may?",
+  "outcomes" : [ {
+    "_text" : "i want to be in paris on the 3rd of may?",
+    "confidence" : null,
+    "intent" : "default_intent",
+    "entities" : {
+      "location" : [ {
+        "type" : "value",
+        "value" : "paris",
+        "suggested" : true
+      } ],
+      "datetime" : [ {
+        "type" : "value",
+        "value" : "2016-05-03T00:00:00.000-07:00",
+        "grain" : "day",
+        "values" : [ {
+          "type" : "value",
+          "value" : "2016-05-03T00:00:00.000-07:00",
+          "grain" : "day"
+        }, {
+          "type" : "value",
+          "value" : "2017-05-03T00:00:00.000-07:00",
+          "grain" : "day"
+        }, {
+          "type" : "value",
+          "value" : "2018-05-03T00:00:00.000-07:00",
+          "grain" : "day"
+        } ]
+      } ],
+      "intent" : [ {
+        "value" : "book-trip"
+      } ]
+    }
+  } ]
+}

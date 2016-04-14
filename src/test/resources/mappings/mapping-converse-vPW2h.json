@@ -1,0 +1,16 @@
+{
+  "request" : {
+    "url" : "/converse?v=20160413&session_id=test-converse-id1&context=%7B%22destination%22:%22stockholm%22,%22arrivalDate%22:%222016-04-18T00:00:00.000-07:00%22,%22returnDate%22:%222016-04-20T00:00:00.000-07:00%22,%22ignoreme%22:%22please%22%7D",
+    "method" : "POST"
+  },
+  "response" : {
+    "status" : 200,
+    "bodyFileName" : "body-converse-vPW2h.json",
+    "headers" : {
+      "Server" : "nginx/1.8.0",
+      "Date" : "Thu, 14 Apr 2016 15:11:09 GMT",
+      "Content-Type" : "application/json",
+      "Connection" : "keep-alive"
+    }
+  }
+}
