@@ -165,7 +165,7 @@
         <repository>
             <id>bintray-bots4j-maven-repo</id>
             <name>bots4j-maven-repo</name>
-            <url>https://api.bintray.com/maven/bots4j/maven-repo/msbotframework/;publish=1</url>
+            <url>https://api.bintray.com/maven/bots4j/maven-repo/wit-ai-client/;publish=1</url>
         </repository>
     </distributionManagement>
 

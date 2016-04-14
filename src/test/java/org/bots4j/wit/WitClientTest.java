@@ -18,6 +18,7 @@ import com.github.tomakehurst.wiremock.junit.WireMockRule;
 
 import org.bots4j.wit.beans.ConverseResponse;
 import org.bots4j.wit.beans.GetIntentViaTextResponse;
+import org.bots4j.wit.beans.Outcome;
 import org.bots4j.wit.beans.WitContext;
 import org.junit.Rule;
 import org.junit.Test;
@@ -45,6 +46,10 @@ public class WitClientTest {
 
         GetIntentViaTextResponse response = client.getIntentViaText(message,null,null,null,null);
         assertNotNull(response.getOutcomes());
+
+        Outcome outcome = response.getOutcomes().get(0);
+        assertEquals("book-trip", outcome.getEntities().firstEntityValue("intent"));
+        assertEquals("paris", outcome.getEntities().firstEntityValue("location"));
     }
 
     @Test
